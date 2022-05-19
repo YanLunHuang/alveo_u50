@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="alveo_hls4ml" dir="">
+  <FileSets>
+    <FileSet Name="kernel_alveo_hls4ml" Type="DesignSrcs">
+      <File Path="/home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp"/>
+      <File Path="/home/YL_HUANG/5_13/hls4ml_ours/src/myproject.cpp"/>
+      <Config/>
+    </FileSet>
+  </FileSets>
+  <Runs/>
+</project>

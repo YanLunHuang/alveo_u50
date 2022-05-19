@@ -1,0 +1,18 @@
+INFO: [v++ 60-1306] Additional information associated with this v++ compile can be found at:
+	Reports: /home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/reports/alveo_hls4ml
+	Log files: /home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/logs/alveo_hls4ml
+INFO: [v++ 60-1548] Creating build summary session with primary output /home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml.xo.compile_summary, at Thu May 19 17:05:02 2022
+INFO: [v++ 60-1316] Initiating connection to rulecheck server, at Thu May 19 17:05:02 2022
+INFO: [v++ 60-1315] Creating rulecheck session with output '/home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/reports/alveo_hls4ml/v++_compile_alveo_hls4ml_guidance.html', at Thu May 19 17:05:03 2022
+INFO: [v++ 60-895]   Target platform: /opt/xilinx/platforms/xilinx_u50_xdma_201920_1/xilinx_u50_xdma_201920_1.xpfm
+INFO: [v++ 60-1578]   This platform contains Device Support Archive '/opt/xilinx/platforms/xilinx_u50_xdma_201920_1/hw/xilinx_u50_xdma_201920_1.dsa'
+INFO: [v++ 60-585] Compiling for software emulation target
+INFO: [v++ 60-423]   Target device: xilinx_u50_xdma_201920_1
+WARNING: [v++ 60-889] User-specified kernel frequency for ID 0 is the same as the default frequency 300 MHz, so it will be ignored
+INFO: [v++ 60-242] Creating kernel: 'alveo_hls4ml'
+
+===>The following messages were generated while  performing high-level synthesis for kernel: alveo_hls4ml Log file: /home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml/alveo_hls4ml/vivado_hls.log :
+INFO: [v++ 204-61] Option 'relax_ii_for_timing' is enabled, will increase II to preserve clock frequency constraints.
+INFO: [v++ 60-594] Finished kernel compilation
+INFO: [v++ 60-586] Created _x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml.xo
+INFO: [v++ 60-791] Total elapsed time: 0h 1m 25s

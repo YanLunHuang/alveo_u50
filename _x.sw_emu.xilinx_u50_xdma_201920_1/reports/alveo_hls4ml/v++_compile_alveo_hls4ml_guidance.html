@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<title>Design Guidance Report</title>
+<link rel="stylesheet" href="file:///opt/Xilinx/Vitis/2019.2/data/rulecheck/rulecheck.css">
+<script type="text/javascript" src="file:///opt/Xilinx/Vitis/2019.2/data/rulecheck/rulecheck.js"></script>
+</head><body>
+<center><h1>Design Guidance Report</h1></center><center><table class="header" border="0">
+<tr><td><b>Copyright</b></td><td>Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.</td></tr>
+<tr><td><b>Tool Version</b></td><td>xrcserver v.2019.2 (lin64) Build 0 </td></tr>
+<tr><td><b>Date</b></td><td>Thu May 19 17:06:27 2022</td></tr>
+<tr><td><b>Host</b></td><td>r7515ed520 running 64-bit CentOS Linux release 7.9.2009 (Core)</td></tr>
+<tr><td><b>Command</b></td><td>v++  -t sw_emu --platform xilinx_u50_xdma_201920_1 --save-temps -g --temp_dir ./_x.sw_emu.xilinx_u50_xdma_201920_1 -c -k alveo_hls4ml -Isrc -o_x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml.xo src/alveo_hls4ml.cpp src/myproject.cpp -DMYPROJ=myproject -DIS_DENSE -I./src/ -I./src/weights -I./src/nnet_utils/ --config config.ini --kernel_frequency 300 </td></tr>
+</table></center><br>
+<table class="toc" border="1"><tr><td><b>Table of Contents</b></td></tr>
+<tr><td><a href="#REPORT SUMMARY">1 REPORT SUMMARY</a></tr></td>
+<tr><td><a href="#VIOLATION DETAILS">2 VIOLATION DETAILS</a></tr></td>
+<tr><td><a href="#CONFIG FILE DETAILS">3 CONFIG FILE DETAILS</a></tr></td>
+</table>
+<a name="REPORT SUMMARY"></a><h1>1 REPORT SUMMARY</h1>
+<pre>Violations found: 14
+</pre>
+<pre>Rule Specs Violated: 2
+</pre>
+<a name="VIOLATION DETAILS"></a><h1>2 VIOLATION DETAILS</h1>
+<table border="1">
+<caption>Items that may require attention</caption>
+<tr class="ns-sort">
+<th align="left">Id</th>
+<th align="left">Name</th>
+<th align="left">Severity</th>
+<th align="left" width="170">Full Name</th>
+<th align="left">Categories</th>
+<th align="left" width="350">Details</th>
+<th align="left" width="380">Resolution</th>
+</tr>
+<tr>
+<td align="left">1</td>
+<td align="left">Kernel</td>
+<td align="left">warning</td>
+<td align="left">HLS Kernel Related</td>
+<td align="left">Accelerator.alveo_hls4ml.Kernel</td>
+<td align="left">Since the only kind of statements allowed in a canonical dataflow region are variable declarations and function calls, the compiler may not be able to correctly handle the region: <a href="file:///home/YL_HUANG/5_13/hls4ml_ours/src/nnet_utils/nnet_dense_latency.h#line=64">nnet_dense_latency.h</a>
+</td>
+<td align="left">Consult the <a href="http://www.xilinx.com/support/documentation/sw_manuals/xilinx2018_3/ug902-vivado-high-level-synthesis.pdf">Vivado HLS User Guide (UG902)</a>.</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">Kernel</td>
+<td align="left">warning</td>
+<td align="left">HLS Kernel Related</td>
+<td align="left">Accelerator.alveo_hls4ml.Kernel</td>
+<td align="left">Since the only kind of statements allowed in a canonical dataflow region are variable declarations and function calls, the compiler may not be able to correctly handle the region: <a href="file:///home/YL_HUANG/5_13/hls4ml_ours/src/nnet_utils/nnet_dense_latency.h#line=79">nnet_dense_latency.h</a>
+</td>
+<td align="left">Consult the <a href="http://www.xilinx.com/support/documentation/sw_manuals/xilinx2018_3/ug902-vivado-high-level-synthesis.pdf">Vivado HLS User Guide (UG902)</a>.</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">Loop</td>
+<td align="left">warning</td>
+<td align="left">HLS Loop Related</td>
+<td align="left">Accelerator.alveo_hls4ml.Loop</td>
+<td align="left">Only for-loops and functions support the dataflow: <a href="file:///home/YL_HUANG/5_13/hls4ml_ours/src/nnet_utils/nnet_dense_latency.h#line=76">nnet_dense_latency.h</a>
+</td>
+<td align="left">Consult the <a href="http://www.xilinx.com/support/documentation/sw_manuals/xilinx2018_3/ug902-vivado-high-level-synthesis.pdf">Vivado HLS User Guide (UG902)</a>.</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">Loop</td>
+<td align="left">warning</td>
+<td align="left">HLS Loop Related</td>
+<td align="left">Accelerator.alveo_hls4ml.Loop</td>
+<td align="left">Only for-loops and functions support the dataflow: <a href="file:///home/YL_HUANG/5_13/hls4ml_ours/src/nnet_utils/nnet_batchnorm.h#line=79">nnet_batchnorm.h</a>
+</td>
+<td align="left">Consult the <a href="http://www.xilinx.com/support/documentation/sw_manuals/xilinx2018_3/ug902-vivado-high-level-synthesis.pdf">Vivado HLS User Guide (UG902)</a>.</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">Kernel</td>
+<td align="left">warning</td>
+<td align="left">HLS Kernel Related</td>
+<td align="left">Accelerator.alveo_hls4ml.Kernel</td>
+<td align="left">Dataflow form checks found 4 issue(s) in file /home/YL_HUANG/5_13/hls4ml_ours/src/myproject.cpp
+</td>
+<td align="left">Consult the <a href="http://www.xilinx.com/support/documentation/sw_manuals/xilinx2018_3/ug902-vivado-high-level-synthesis.pdf">Vivado HLS User Guide (UG902)</a>.</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left">Kernel</td>
+<td align="left">warning</td>
+<td align="left">HLS Kernel Related</td>
+<td align="left">Accelerator.alveo_hls4ml.Kernel</td>
+<td align="left">Static scalars and arrays declared inside a dataflow region will be treated like local variables: <a href="file:///home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp#line=97">alveo_hls4ml.cpp</a>
+</td>
+<td align="left">Consult the <a href="http://www.xilinx.com/support/documentation/sw_manuals/xilinx2018_3/ug902-vivado-high-level-synthesis.pdf">Vivado HLS User Guide (UG902)</a>.</td>
+</tr>
+<tr>
+<td align="left">7</td>
+<td align="left">Kernel</td>
+<td align="left">warning</td>
+<td align="left">HLS Kernel Related</td>
+<td align="left">Accelerator.alveo_hls4ml.Kernel</td>
+<td align="left">Static scalars and arrays declared inside a dataflow region will be treated like local variables: <a href="file:///home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp#line=98">alveo_hls4ml.cpp</a>
+</td>
+<td align="left">Consult the <a href="http://www.xilinx.com/support/documentation/sw_manuals/xilinx2018_3/ug902-vivado-high-level-synthesis.pdf">Vivado HLS User Guide (UG902)</a>.</td>
+</tr>
+<tr>
+<td align="left">8</td>
+<td align="left">Kernel</td>
+<td align="left">warning</td>
+<td align="left">HLS Kernel Related</td>
+<td align="left">Accelerator.alveo_hls4ml.Kernel</td>
+<td align="left">Static scalars and arrays declared inside a dataflow region will be treated like local variables: <a href="file:///home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp#line=99">alveo_hls4ml.cpp</a>
+</td>
+<td align="left">Consult the <a href="http://www.xilinx.com/support/documentation/sw_manuals/xilinx2018_3/ug902-vivado-high-level-synthesis.pdf">Vivado HLS User Guide (UG902)</a>.</td>
+</tr>
+<tr>
+<td align="left">9</td>
+<td align="left">Kernel</td>
+<td align="left">warning</td>
+<td align="left">HLS Kernel Related</td>
+<td align="left">Accelerator.alveo_hls4ml.Kernel</td>
+<td align="left">Static scalars and arrays declared inside a dataflow region will be treated like local variables: <a href="file:///home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp#line=100">alveo_hls4ml.cpp</a>
+</td>
+<td align="left">Consult the <a href="http://www.xilinx.com/support/documentation/sw_manuals/xilinx2018_3/ug902-vivado-high-level-synthesis.pdf">Vivado HLS User Guide (UG902)</a>.</td>
+</tr>
+<tr>
+<td align="left">10</td>
+<td align="left">Kernel</td>
+<td align="left">warning</td>
+<td align="left">HLS Kernel Related</td>
+<td align="left">Accelerator.alveo_hls4ml.Kernel</td>
+<td align="left">Static scalars and arrays declared inside a dataflow region will be treated like local variables: <a href="file:///home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp#line=101">alveo_hls4ml.cpp</a>
+</td>
+<td align="left">Consult the <a href="http://www.xilinx.com/support/documentation/sw_manuals/xilinx2018_3/ug902-vivado-high-level-synthesis.pdf">Vivado HLS User Guide (UG902)</a>.</td>
+</tr>
+<tr>
+<td align="left">11</td>
+<td align="left">Kernel</td>
+<td align="left">warning</td>
+<td align="left">HLS Kernel Related</td>
+<td align="left">Accelerator.alveo_hls4ml.Kernel</td>
+<td align="left">Static scalars and arrays declared inside a dataflow region will be treated like local variables: <a href="file:///home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp#line=102">alveo_hls4ml.cpp</a>
+</td>
+<td align="left">Consult the <a href="http://www.xilinx.com/support/documentation/sw_manuals/xilinx2018_3/ug902-vivado-high-level-synthesis.pdf">Vivado HLS User Guide (UG902)</a>.</td>
+</tr>
+<tr>
+<td align="left">12</td>
+<td align="left">Kernel</td>
+<td align="left">warning</td>
+<td align="left">HLS Kernel Related</td>
+<td align="left">Accelerator.alveo_hls4ml.Kernel</td>
+<td align="left">Static scalars and arrays declared inside a dataflow region will be treated like local variables: <a href="file:///home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp#line=109">alveo_hls4ml.cpp</a>
+</td>
+<td align="left">Consult the <a href="http://www.xilinx.com/support/documentation/sw_manuals/xilinx2018_3/ug902-vivado-high-level-synthesis.pdf">Vivado HLS User Guide (UG902)</a>.</td>
+</tr>
+<tr>
+<td align="left">13</td>
+<td align="left">Kernel</td>
+<td align="left">warning</td>
+<td align="left">HLS Kernel Related</td>
+<td align="left">Accelerator.alveo_hls4ml.Kernel</td>
+<td align="left">Since the only kind of statements allowed in a canonical dataflow region are variable declarations and function calls, the compiler may not be able to correctly handle the region: <a href="file:///home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp#line=111">alveo_hls4ml.cpp</a>
+</td>
+<td align="left">Consult the <a href="http://www.xilinx.com/support/documentation/sw_manuals/xilinx2018_3/ug902-vivado-high-level-synthesis.pdf">Vivado HLS User Guide (UG902)</a>.</td>
+</tr>
+<tr>
+<td align="left">14</td>
+<td align="left">Kernel</td>
+<td align="left">warning</td>
+<td align="left">HLS Kernel Related</td>
+<td align="left">Accelerator.alveo_hls4ml.Kernel</td>
+<td align="left">Dataflow form checks found 8 issue(s) in file /home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp
+</td>
+<td align="left">Consult the <a href="http://www.xilinx.com/support/documentation/sw_manuals/xilinx2018_3/ug902-vivado-high-level-synthesis.pdf">Vivado HLS User Guide (UG902)</a>.</td>
+</tr>
+</table>
+<br>
+<a name="CONFIG FILE DETAILS"></a><h1>3 CONFIG FILE DETAILS</h1>
+<pre>Config files found: 1
+</pre>
+<table border="1">
+<caption>Details of the config files</caption>
+<tr>
+<th align="left">File name</th>
+<th align="left">Contents</th>
+</tr>
+<tr>
+<td align="left">config.ini
+</td>
+<td align="left">[advanced]
+prop=solution.hls_pre_tcl=./config.tcl
+prop=kernel.alveo_hls4ml.kernel_flags=-std=c++11
+
+#[connectivity]
+#nk=<kernel name>:<number>:<cu_name>.<cu_name>...
+#nk=alveo_hls4ml:1:alveo_hls4ml_1
+#nk=alveo_hls4ml:2:alveo_hls4ml_0.alveo_hls4ml_1
+#sp=<compute_unit_name>.<interface_name>:<bank name> 
+#sp=alveo_hls4ml_0.m_axi_gmem:bank0
+#sp=alveo_hls4ml_1.m_axi_gmem:bank1
+#slr=<compute_unit_name>:<slr_ID>
+#slr=alveo_hls4ml_0:SLR0
+#slr=alveo_hls4ml_1:SLR1
+
+</td>
+</tr>
+</table>
+<br>
+</body></html>

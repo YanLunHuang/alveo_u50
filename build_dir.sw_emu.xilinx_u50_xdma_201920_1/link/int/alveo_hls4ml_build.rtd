@@ -1,0 +1,198 @@
+{
+    "schema_version": {
+        "major": "1",
+        "minor": "0",
+        "patch": "0"
+    },
+    "build_metadata": {
+        "dsa": {
+            "vendor": "xilinx",
+            "board_id": "u50",
+            "name": "xdma",
+            "version_major": "201920",
+            "version_minor": "1",
+            "description": "",
+            "generated_by": {
+                "name": "Vivado",
+                "version": "2019.1",
+                "cl": "2655432",
+                "time_stamp": "Sat Oct 19 03:43:09 2019"
+            },
+            "board": {
+                "name": "xilinx.com:au50:1.0",
+                "vendor": "xilinx.com",
+                "part": "xcu50-fsvh2104-2L-e",
+                "board_part": "xilinx.com:au50:part0:1.0"
+            },
+            "feature_roms": [
+                {
+                    "majorVersion": "10",
+                    "minorVersion": "1",
+                    "vivadoBuildID": "2655432",
+                    "ipBuildID": "2614713",
+                    "timeSinceEpoch": "1571453167",
+                    "fpgaPartName": "xcu50-fsvh2104-2L-e",
+                    "vbnvName": "xilinx_u50_xdma_201920_1",
+                    "ddrChannelCount": "0",
+                    "ddrChannelSize": "0",
+                    "drBaseAddress": "0x0",
+                    "featureBitMap": {
+                        "value": "0x2020d",
+                        "unifiedPlatform": "enabled",
+                        "auroraLink": "disabled",
+                        "boardMgmt": "enabled",
+                        "boardScheduler": "enabled",
+                        "promType": "0x0",
+                        "debugType": "0x2",
+                        "peerToPeer": "disabled",
+                        "uuid": "enabled",
+                        "clockThrottling": "disabled",
+                        "passthruTrans": "disabled"
+                    },
+                    "uuid": "b6ac0f32-ef98-4938-924a-7bb9811b3909",
+                    "cdmaBaseAddress0": "0x0",
+                    "cdmaBaseAddress1": "0x0",
+                    "cdmaBaseAddress2": "0x0",
+                    "cdmaBaseAddress3": "0x0",
+                    "maxTempLimit": "0",
+                    "maxPowerLimit": "0"
+                }
+            ]
+        },
+        "xclbin": {
+            "generated_by": {
+                "name": "v++",
+                "version": "2019.2",
+                "cl": "2708876",
+                "time_stamp": "Wed Nov  6 21:39:14 MST 2019",
+                "options": "\/opt\/Xilinx\/Vitis\/2019.2\/bin\/unwrapped\/lnx64.o\/v++ -t sw_emu --platform xilinx_u50_xdma_201920_1 --save-temps -g --temp_dir .\/build_dir.sw_emu.xilinx_u50_xdma_201920_1 -l -obuild_dir.sw_emu.xilinx_u50_xdma_201920_1\/alveo_hls4ml.xclbin _x.sw_emu.xilinx_u50_xdma_201920_1\/alveo_hls4ml.xo --config config.ini --kernel_frequency 200 "
+            },
+            "user_regions": [
+                {
+                    "name": "OCL_REGION_0",
+                    "type": "clc_region",
+                    "instance_path": "pfm_top_i\/L1\/L1_URP",
+                    "base_address": "",
+                    "kernels": [
+                        {
+                            "name": "alveo_hls4ml",
+                            "ports": [
+                                {
+                                    "name": "M_AXI_GMEM",
+                                    "mode": "master",
+                                    "range": "0xFFFFFFFF",
+                                    "data_width": "512",
+                                    "port_type": "addressable",
+                                    "base": "0x0"
+                                },
+                                {
+                                    "name": "S_AXI_CONTROL",
+                                    "mode": "slave",
+                                    "range": "0x1000",
+                                    "data_width": "32",
+                                    "port_type": "addressable",
+                                    "base": "0x0"
+                                }
+                            ],
+                            "arguments": [
+                                {
+                                    "name": "in",
+                                    "address_qualifier": "1",
+                                    "id": "0",
+                                    "port": "M_AXI_GMEM",
+                                    "size": "0x8",
+                                    "offset": "0x10",
+                                    "host_offset": "0x0",
+                                    "host_size": "0x8",
+                                    "type": "ap_uint<512> const *"
+                                },
+                                {
+                                    "name": "in_weights1",
+                                    "address_qualifier": "1",
+                                    "id": "1",
+                                    "port": "M_AXI_GMEM",
+                                    "size": "0x8",
+                                    "offset": "0x1C",
+                                    "host_offset": "0x0",
+                                    "host_size": "0x8",
+                                    "type": "ap_fixed<32, 16, 5, 3, 0> const *"
+                                },
+                                {
+                                    "name": "in_weights2",
+                                    "address_qualifier": "1",
+                                    "id": "2",
+                                    "port": "M_AXI_GMEM",
+                                    "size": "0x8",
+                                    "offset": "0x28",
+                                    "host_offset": "0x0",
+                                    "host_size": "0x8",
+                                    "type": "ap_fixed<32, 16, 5, 3, 0> const *"
+                                },
+                                {
+                                    "name": "in_weights3",
+                                    "address_qualifier": "1",
+                                    "id": "3",
+                                    "port": "M_AXI_GMEM",
+                                    "size": "0x8",
+                                    "offset": "0x34",
+                                    "host_offset": "0x0",
+                                    "host_size": "0x8",
+                                    "type": "ap_fixed<32, 16, 5, 3, 0> const *"
+                                },
+                                {
+                                    "name": "in_weights4",
+                                    "address_qualifier": "1",
+                                    "id": "4",
+                                    "port": "M_AXI_GMEM",
+                                    "size": "0x8",
+                                    "offset": "0x40",
+                                    "host_offset": "0x0",
+                                    "host_size": "0x8",
+                                    "type": "ap_fixed<32, 16, 5, 3, 0> const *"
+                                },
+                                {
+                                    "name": "in_weights5",
+                                    "address_qualifier": "1",
+                                    "id": "5",
+                                    "port": "M_AXI_GMEM",
+                                    "size": "0x8",
+                                    "offset": "0x4C",
+                                    "host_offset": "0x0",
+                                    "host_size": "0x8",
+                                    "type": "ap_fixed<32, 16, 5, 3, 0> const *"
+                                },
+                                {
+                                    "name": "in_weights6",
+                                    "address_qualifier": "1",
+                                    "id": "6",
+                                    "port": "M_AXI_GMEM",
+                                    "size": "0x8",
+                                    "offset": "0x58",
+                                    "host_offset": "0x0",
+                                    "host_size": "0x8",
+                                    "type": "ap_fixed<32, 16, 5, 3, 0> const *"
+                                },
+                                {
+                                    "name": "out",
+                                    "address_qualifier": "1",
+                                    "id": "7",
+                                    "port": "M_AXI_GMEM",
+                                    "size": "0x8",
+                                    "offset": "0x64",
+                                    "host_offset": "0x0",
+                                    "host_size": "0x8",
+                                    "type": "ap_uint<512>*"
+                                }
+                            ],
+                            "instances": [
+                                {
+                                    "name": "alveo_hls4ml_1"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

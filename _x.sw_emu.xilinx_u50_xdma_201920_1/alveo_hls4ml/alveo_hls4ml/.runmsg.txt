@@ -1,0 +1,2 @@
+performing high-level synthesis for kernel: alveo_hls4ml
+Log file: /home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml/alveo_hls4ml/vivado_hls.log

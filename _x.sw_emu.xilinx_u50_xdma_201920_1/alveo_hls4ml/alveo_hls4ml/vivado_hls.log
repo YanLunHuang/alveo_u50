@@ -1,0 +1,53 @@
+
+****** Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.2 (64-bit)
+  **** SW Build 2708876 on Wed Nov  6 21:39:14 MST 2019
+  **** IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
+    ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+source /opt/Xilinx/Vivado/2019.2/scripts/vivado_hls/hls.tcl -notrace
+INFO: Applying HLS Y2K22 patch v1.2 for IP revision
+INFO: [HLS 200-10] Running '/opt/Xilinx/Vivado/2019.2/bin/unwrapped/lnx64.o/vivado_hls'
+INFO: [HLS 200-10] For user 'YL_HUANG' on host 'r7515ed520.EE.NCTU.edu.tw' (Linux_x86_64 version 3.10.0-1160.11.1.el7.x86_64) on Thu May 19 17:05:11 CST 2022
+INFO: [HLS 200-10] On os "CentOS Linux release 7.9.2009 (Core)"
+INFO: [HLS 200-10] In directory '/home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml/alveo_hls4ml'
+Sourcing Tcl script 'alveo_hls4ml.tcl'
+INFO: [HLS 200-10] Creating and opening project '/home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml/alveo_hls4ml/alveo_hls4ml'.
+INFO: [HLS 200-10] Adding design file '/home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp' to the project
+INFO: [HLS 200-10] Adding design file '/home/YL_HUANG/5_13/hls4ml_ours/src/myproject.cpp' to the project
+INFO: [HLS 200-10] Creating and opening solution '/home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml/alveo_hls4ml/alveo_hls4ml/solution'.
+INFO: [HLS 200-10] Setting target device to 'xcu50-fsvh2104-2L-e'
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 3.333ns.
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: config_export -vivado_optimization_level=0
+INFO: [HLS 200-435] Setting 'config_export -vivado_optimization_level' configuration: config_export -vivado_phys_opt=none
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: config_compile -pipeline_loops=64
+INFO: [XFORM 203-1171] Pipeline the innermost loop with trip count more than 64 or its parent loop when its trip count is less than or equal 64.
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: config_compile -name_max_length=80
+INFO: [XFORM 203-1161] The maximum of name length is set into 80.
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: config_schedule -enable_dsp_full_reg=1
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: config_rtl -register_reset_num=3
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: config_rtl -module_auto_prefix=1
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: config_interface -m_axi_addr64=1
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: set_clock_uncertainty 27%
+INFO: [SYN 201-201] Setting up clock 'default' with an uncertainty of 0.9ns.
+INFO: [SYN 201-201] Setting up clock 'default' with an uncertainty of 0.9ns.
+INFO: [SCHED 204-61] Option 'relax_ii_for_timing' is enabled, will increase II to preserve clock frequency constraints.
+INFO: [HLS 200-10] Analyzing design file '/home/YL_HUANG/5_13/hls4ml_ours/src/myproject.cpp' ... 
+WARNING: [HLS 214-114] Since the only kind of statements allowed in a canonical dataflow region are variable declarations and function calls, the compiler may not be able to correctly handle the region: /home/YL_HUANG/5_13/hls4ml_ours/src/nnet_utils/nnet_dense_latency.h:64:9
+WARNING: [HLS 214-114] Since the only kind of statements allowed in a canonical dataflow region are variable declarations and function calls, the compiler may not be able to correctly handle the region: /home/YL_HUANG/5_13/hls4ml_ours/src/nnet_utils/nnet_dense_latency.h:79:2
+WARNING: [HLS 214-104] Only for-loops and functions support the dataflow: /home/YL_HUANG/5_13/hls4ml_ours/src/nnet_utils/nnet_dense_latency.h:76:9
+WARNING: [HLS 214-104] Only for-loops and functions support the dataflow: /home/YL_HUANG/5_13/hls4ml_ours/src/nnet_utils/nnet_batchnorm.h:79:9
+WARNING: [HLS 200-471] Dataflow form checks found 4 issue(s) in file /home/YL_HUANG/5_13/hls4ml_ours/src/myproject.cpp
+INFO: [HLS 200-10] Analyzing design file '/home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp' ... 
+WARNING: [HLS 214-111] Static scalars and arrays declared inside a dataflow region will be treated like local variables: /home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp:97:25
+WARNING: [HLS 214-111] Static scalars and arrays declared inside a dataflow region will be treated like local variables: /home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp:98:28
+WARNING: [HLS 214-111] Static scalars and arrays declared inside a dataflow region will be treated like local variables: /home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp:99:28
+WARNING: [HLS 214-111] Static scalars and arrays declared inside a dataflow region will be treated like local variables: /home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp:100:28
+WARNING: [HLS 214-111] Static scalars and arrays declared inside a dataflow region will be treated like local variables: /home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp:101:28
+WARNING: [HLS 214-111] Static scalars and arrays declared inside a dataflow region will be treated like local variables: /home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp:102:28
+WARNING: [HLS 214-111] Static scalars and arrays declared inside a dataflow region will be treated like local variables: /home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp:109:14
+WARNING: [HLS 214-114] Since the only kind of statements allowed in a canonical dataflow region are variable declarations and function calls, the compiler may not be able to correctly handle the region: /home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp:111:5
+WARNING: [HLS 200-471] Dataflow form checks found 8 issue(s) in file /home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp
+INFO: [HLS 200-111] Finished Linking Time (s): cpu = 00:01:12 ; elapsed = 00:01:15 . Memory (MB): peak = 1046.043 ; gain = 526.004 ; free physical = 66050 ; free virtual = 110212
+INFO: [HLS 200-111] Finished Checking Pragmas Time (s): cpu = 00:01:12 ; elapsed = 00:01:15 . Memory (MB): peak = 1046.043 ; gain = 526.004 ; free physical = 66050 ; free virtual = 110212
+HLS completed successfully
+INFO: [Common 17-206] Exiting vivado_hls at Thu May 19 17:06:27 2022...

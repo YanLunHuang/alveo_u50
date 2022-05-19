@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="link" dir="">
+  <FileSets>
+    <FileSet Name="kernel_alveo_hls4ml" Type="DesignSrcs">
+      <File Path="/home/YL_HUANG/5_13/hls4ml_ours/build_dir.sw_emu.xilinx_u50_xdma_201920_1/link/int/xo/alveo_hls4ml/alveo_hls4ml/cpu_sources/myproject.cpp"/>
+      <File Path="/home/YL_HUANG/5_13/hls4ml_ours/build_dir.sw_emu.xilinx_u50_xdma_201920_1/link/int/xo/alveo_hls4ml/alveo_hls4ml/cpu_sources/alveo_hls4ml.cpp"/>
+      <Config/>
+    </FileSet>
+  </FileSets>
+  <Runs/>
+</project>

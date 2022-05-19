@@ -1,0 +1,202 @@
+<ENTRY>
+{
+ "session": {
+  "name": "v++_compile_alveo_hls4ml",
+  "pid": "0",
+  "uuid": "5ec27eaa-dc60-4415-af5d-6ffc4c9f2523",
+  "description": "",
+  "timestamp": "0",
+  "outputFiles": [
+   {
+    "type": "JSON",
+    "mode": "CLIENT_ONLY",
+    "path": "/home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/.tlog/v++_compile_alveo_hls4ml.xtl",
+    "continuous": true
+   },
+   {
+    "type": "JSON",
+    "mode": "LOCAL_IF_NO_CONNECT",
+    "path": "/home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml.xo.compile_summary",
+    "continuous": true
+   },
+   {
+    "type": "BINARY_PROTOBUF",
+    "mode": "LOCAL_IF_NO_CONNECT",
+    "path": "/home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml.xo.compile_summary.pb",
+    "continuous": true
+   }
+  ]
+ },
+ "thisFile": "/home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml.xo.compile_summary",
+ "connectId": "",
+ "serverToken": "",
+ "timestamp": "0"
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_CmdStep",
+ "dateTimestamp": "Thu May 19 17:05:01 2022",
+ "timestampMillis": "1652951101831",
+ "buildStep": {
+  "cmdId": "334bbea0-4851-463c-bd13-2609a103b4fb",
+  "name": "v++",
+  "logFile": "/home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml/alveo_hls4ml.steps.log",
+  "commandLine": "/opt/Xilinx/Vitis/2019.2/bin/unwrapped/lnx64.o/v++  --xp \"vivado_prop:run.__KERNEL__.{STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS}={-directive sdx_optimization_effort_high}\" --xp \"misc:report=type report_timing_summary name impl_report_timing_summary_route_design_summary steps {route_design} runs {impl_1} options {-max_paths 10}\" --xp \"misc:report=type report_timing_summary name impl_report_timing_summary_post_route_phys_opt_design_summary steps {post_route_phys_opt_design} runs {impl_1} options {-max_paths 10}\" -t sw_emu --platform xilinx_u50_xdma_201920_1 --save-temps -g --temp_dir ./_x.sw_emu.xilinx_u50_xdma_201920_1 -c -k alveo_hls4ml -Isrc -o_x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml.xo src/alveo_hls4ml.cpp src/myproject.cpp -DMYPROJ=myproject -DIS_DENSE -I./src/ -I./src/weights -I./src/nnet_utils/ --config config.ini --kernel_frequency 300 ",
+  "args": [
+   "-t",
+   "sw_emu",
+   "--platform",
+   "xilinx_u50_xdma_201920_1",
+   "--save-temps",
+   "-g",
+   "--temp_dir",
+   "./_x.sw_emu.xilinx_u50_xdma_201920_1",
+   "-c",
+   "-k",
+   "alveo_hls4ml",
+   "-Isrc",
+   "-o_x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml.xo",
+   "src/alveo_hls4ml.cpp",
+   "src/myproject.cpp",
+   "-DMYPROJ=myproject",
+   "-DIS_DENSE",
+   "-I./src/",
+   "-I./src/weights",
+   "-I./src/nnet_utils/",
+   "--config",
+   "config.ini",
+   "--kernel_frequency",
+   "300"
+  ],
+  "iniFiles": [
+   {
+    "path": "/home/YL_HUANG/5_13/hls4ml_ours/config.ini",
+    "content": "[advanced]\nprop=solution.hls_pre_tcl=./config.tcl\nprop=kernel.alveo_hls4ml.kernel_flags=-std=c++11\n\n#[connectivity]\n#nk=\u003ckernel name\u003e:\u003cnumber\u003e:\u003ccu_name\u003e.\u003ccu_name\u003e...\n#nk=alveo_hls4ml:1:alveo_hls4ml_1\n#nk=alveo_hls4ml:2:alveo_hls4ml_0.alveo_hls4ml_1\n#sp=\u003ccompute_unit_name\u003e.\u003cinterface_name\u003e:\u003cbank name\u003e \n#sp=alveo_hls4ml_0.m_axi_gmem:bank0\n#sp=alveo_hls4ml_1.m_axi_gmem:bank1\n#slr=\u003ccompute_unit_name\u003e:\u003cslr_ID\u003e\n#slr=alveo_hls4ml_0:SLR0\n#slr=alveo_hls4ml_1:SLR1\n"
+   }
+  ]
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "Thu May 19 17:05:01 2022",
+ "timestampMillis": "1652951101832",
+ "status": {
+  "cmdId": "334bbea0-4851-463c-bd13-2609a103b4fb",
+  "state": "CS_RUNNING"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_FlowMetaData",
+ "dateTimestamp": "Thu May 19 17:05:09 2022",
+ "timestampMillis": "1652951109078",
+ "buildSummary": {
+  "hardwarePlatform": "xilinx_u50_xdma_201920_1.xpfm",
+  "hardwareDsa": "xilinx_u50_xdma_201920_1.dsa",
+  "platformDirectory": "/opt/xilinx/platforms/xilinx_u50_xdma_201920_1",
+  "runtime": "OpenCL",
+  "systemConfig": "Linux",
+  "flow": "BF_COMPILE",
+  "target": "TT_SW_EMU",
+  "kernels": [
+   {
+    "base": {
+     "type": "KERNEL",
+     "name": "alveo_hls4ml",
+     "file": "/home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml.xo",
+     "reports": []
+    },
+    "sources": [
+     "/home/YL_HUANG/5_13/hls4ml_ours/src/alveo_hls4ml.cpp",
+     "/home/YL_HUANG/5_13/hls4ml_ours/src/myproject.cpp"
+    ],
+    "cuNames": []
+   }
+  ]
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_SubCmdStep",
+ "dateTimestamp": "Thu May 19 17:05:09 2022",
+ "timestampMillis": "1652951109081",
+ "buildStep": {
+  "cmdId": "d2879696-7c17-4432-ab83-4be31383758d",
+  "name": "vivado_hls",
+  "logFile": "/home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml/alveo_hls4ml/vivado_hls.log",
+  "commandLine": "vivado_hls -f /home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml/alveo_hls4ml/alveo_hls4ml.tcl -messageDb vivado_hls.pb",
+  "args": [
+   "vivado_hls",
+   "-f",
+   "/home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/alveo_hls4ml/alveo_hls4ml/alveo_hls4ml.tcl",
+   "-messageDb",
+   "vivado_hls.pb"
+  ],
+  "iniFiles": []
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "Thu May 19 17:05:09 2022",
+ "timestampMillis": "1652951109082",
+ "status": {
+  "cmdId": "d2879696-7c17-4432-ab83-4be31383758d",
+  "state": "CS_RUNNING"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "Thu May 19 17:06:27 2022",
+ "timestampMillis": "1652951187213",
+ "status": {
+  "cmdId": "d2879696-7c17-4432-ab83-4be31383758d",
+  "state": "CS_PASSED"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Report",
+ "dateTimestamp": "Thu May 19 17:06:27 2022",
+ "timestampMillis": "1652951187282",
+ "report": {
+  "path": "/home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/reports/alveo_hls4ml/v++_compile_alveo_hls4ml_guidance.html",
+  "name": "",
+  "fileType": "HTML",
+  "reportType": "GLOBAL_RULECHECK_GUIDANCE"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Report",
+ "dateTimestamp": "Thu May 19 17:06:27 2022",
+ "timestampMillis": "1652951187283",
+ "report": {
+  "path": "/home/YL_HUANG/5_13/hls4ml_ours/_x.sw_emu.xilinx_u50_xdma_201920_1/v++_compile_alveo_hls4ml_guidance.pb",
+  "name": "",
+  "fileType": "BINARY_PROTOBUF",
+  "reportType": "GLOBAL_RULECHECK_GUIDANCE"
+ }
+}
+</ENTRY>
+<ENTRY>
+{
+ "type": "ET_Status",
+ "dateTimestamp": "Thu May 19 17:06:27 2022",
+ "timestampMillis": "1652951187283",
+ "status": {
+  "cmdId": "334bbea0-4851-463c-bd13-2609a103b4fb",
+  "state": "CS_PASSED"
+ }
+}
+</ENTRY>
