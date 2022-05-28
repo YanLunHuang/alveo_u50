@@ -36,8 +36,8 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <iomanip>
 #include <memory>
 #include <string>
-typedef std::chrono::high_resolution_clock Clock;
-typedef std::chrono::system_clock SClock;
+typedef std::chrono::high_resolution_clock Clock;//more accurate
+typedef std::chrono::system_clock SClock;//less accurate
 
 #include "xcl2.hpp"
 #include <vector>
@@ -59,7 +59,7 @@ typedef std::chrono::system_clock SClock;
 #define STRINGIFY2(var) #var
 #define STRINGIFY(var) STRINGIFY2(var)
 
-void print_nanoseconds(std::string prefix, std::chrono::time_point<std::chrono::system_clock> now, int ik) {
+void print_nanoseconds(std::string prefix, std::chrono::time_point<std::chrono::system_clock> now, int ik, std::ofstream& fout) {
     auto duration = now.time_since_epoch();
     
     typedef std::chrono::duration<int, std::ratio_multiply<std::chrono::hours::period, std::ratio<8>
@@ -79,7 +79,16 @@ void print_nanoseconds(std::string prefix, std::chrono::time_point<std::chrono::
         duration -= microseconds;
     auto nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(duration);
 
-    std::cout << "KERN" << ik << ", " << prefix << hours.count() << ":"
+    std::cout << "input set" << ik << ", "
+          << prefix << hours.count() << ":"
+          << minutes.count() << ":"
+          << seconds.count() << ":"
+          << milliseconds.count() << ":"
+          << microseconds.count() << ":"
+          << nanoseconds.count() << std::endl;
+	
+	fout << "input set" << ik << ", "
+          << prefix << hours.count() << ":"
           << minutes.count() << ":"
           << seconds.count() << ":"
           << milliseconds.count() << ":"
@@ -107,7 +116,8 @@ void print_nanoseconds(std::string prefix, std::chrono::time_point<std::chrono::
         duration -= microseconds;
     auto nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(duration);
 
-    ss << "KERN" << ik << ", " << prefix << hours.count() << ":"
+    ss << "input set" << ik << ", " << prefix 
+          << hours.count() << ":"
           << minutes.count() << ":"
           << seconds.count() << ":"
           << milliseconds.count() << ":"
@@ -249,7 +259,7 @@ class fpgaObj {
 
             t1 = Clock::now();
             auto ts1 = SClock::now();
-            print_nanoseconds("        start:  ",ts1, ik, ss);
+            //print_nanoseconds("        start:  ",ts1, ik, ss);
             std::string queuename = "ooo_queue "+std::to_string(ikb);
         
             get_ilock(ikb);
@@ -259,7 +269,7 @@ class fpgaObj {
             }
             OCL_CHECK(err,
                       err =
-		      q[ik].enqueueMigrateMemObjects({buffer_in[ikb],buffer_wvec_in[0],buffer_wvec_in[1],buffer_wvec_in[2],buffer_wvec_in[3],buffer_wvec_in[4],buffer_wvec_in[5]},
+            q[ik].enqueueMigrateMemObjects({buffer_in[ikb],buffer_wvec_in[0],buffer_wvec_in[1],buffer_wvec_in[2],buffer_wvec_in[3],buffer_wvec_in[4],buffer_wvec_in[5]},
                                                      0 /* 0 means from host*/,
                                                      NULL,
                                                      &(write_event[ikb])));
@@ -285,15 +295,15 @@ class fpgaObj {
             OCL_CHECK(err, err = kern_event[ikb].wait());
             OCL_CHECK(err, err = read_event.wait());
             auto ts2 = SClock::now();
-            print_nanoseconds("       finish:  ",ts2, ik, ss);
+            //print_nanoseconds("       finish:  ",ts2, ik, ss);
             t2 = Clock::now();
-	    t3 = Clock::now();
-            std::cout << " Prep time: " << std::chrono::duration_cast<std::chrono::nanoseconds>(t1 - t0).count() << " ns" << std::endl;
-            std::cout << " FPGA time: " << std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count() << " ns" << std::endl;
-            std::cout << "    inputs: " << std::chrono::duration_cast<std::chrono::nanoseconds>(t1a - t1).count() << " ns" << std::endl;
-            std::cout << "    kernel: " << std::chrono::duration_cast<std::chrono::nanoseconds>(t1b - t1a).count() << " ns" << std::endl;
-            std::cout << "   outputs: " << std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1b).count() << " ns" << std::endl;
-            ss << "KERN"<<ik<<"   Total time: " << std::chrono::duration_cast<std::chrono::nanoseconds>(t3 - t0).count() << " ns\n";
+            t3 = Clock::now();
+            std::cout << "Prep time: " << std::chrono::duration_cast<std::chrono::nanoseconds>(t1 - t0).count() << " ns" << std::endl;
+            std::cout << "FPGA time: " << std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count() << " ns" << std::endl;
+            std::cout << "inputs: " << std::chrono::duration_cast<std::chrono::nanoseconds>(t1a - t1).count() << " ns" << std::endl;
+            std::cout << "kernel: " << std::chrono::duration_cast<std::chrono::nanoseconds>(t1b - t1a).count() << " ns" << std::endl;
+            std::cout << "outputs: " << std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1b).count() << " ns" << std::endl;
+            std::cout << "Total time: " << std::chrono::duration_cast<std::chrono::nanoseconds>(t3 - t0).count() << " ns" << std::endl;
         }
         return ss;
     }
@@ -312,231 +322,256 @@ void FPGA(fpgaObj& theFPGA) {
 
 int main(int argc, char** argv)
 {
-
-    int nevents = 5;
-    std::string datadir = STRINGIFY(HLS4ML_DATA_DIR);
-    std::string xclbinFilename = "";
-    if (argc > 1) xclbinFilename = argv[1];
-    if (argc > 2) nevents = atoi(argv[2]);
-    if (argc > 3) datadir = argv[3];
-    std::cout << "Will run " << nevents << " time(s), using " << datadir << " to get input features and output predictions (tb_input_features.dat and tb_output_predictions.dat)" << std::endl;
-
-    size_t vector_size_in_bytes = sizeof(bigdata_t) * STREAMSIZE * BIGSTREAMSIZE_IN;
-    size_t vector_size_out_bytes = sizeof(bigdata_t) * STREAMSIZE * BIGSTREAMSIZE_OUT;
-    size_t vector_size_in_w27_bytes = sizeof(model_default_t) * NW1;
-    size_t vector_size_in_w31_bytes = sizeof(model_default_t) * NW2;
-    size_t vector_size_in_w36_bytes = sizeof(model_default_t) * NW3;
-    size_t vector_size_in_w40_bytes = sizeof(model_default_t) * NW4;
-    size_t vector_size_in_w45_bytes = sizeof(model_default_t) * NW5;
-    size_t vector_size_in_w49_bytes = sizeof(model_default_t) * NW6;
-    fpgaObj fpga;
-    fpga.nevents = nevents;
-    fpga.ikern = 0;
-    fpga.source_in.reserve(STREAMSIZE*BIGSTREAMSIZE_IN*NUM_CU*NBUFFER);
-    fpga.source_hw_results.reserve(STREAMSIZE*BIGSTREAMSIZE_OUT*NUM_CU*NBUFFER);
-    fpga.source_w27_in.reserve(NW1);
-    fpga.source_w31_in.reserve(NW2);
-    fpga.source_w36_in.reserve(NW3);
-    fpga.source_w40_in.reserve(NW4);
-    fpga.source_w45_in.reserve(NW5);
-    fpga.source_w49_in.reserve(NW6);
-
-    //initialize
-    for(int j = 0 ; j < STREAMSIZE*BIGSTREAMSIZE_IN*NUM_CU*NBUFFER ; j++){
-      if(j != 0) fpga.source_in[j] = 1; //input is here
-      if(j == 0) fpga.source_in[j] = 1;
-    }
-    for(int j = 0 ; j < STREAMSIZE*BIGSTREAMSIZE_OUT*NUM_CU*NBUFFER ; j++){
-      data_t in=(data_t) j;
-      fpga.source_hw_results[j] = in;
-    }
+	int nevents = 1;
+	std::string datadir = STRINGIFY(HLS4ML_DATA_DIR);
+	std::string xclbinFilename = "";
+	if (argc > 1) xclbinFilename = argv[1];
+	if (argc > 2) nevents = atoi(argv[2]);
+	if (argc > 3) datadir = argv[3];
+	std::cout << "Will run " << nevents << " time(s), using " << datadir << " to get input features and output predictions (tb_input_features.dat and tb_output_predictions.dat)" << std::endl;
 	
-    for(int j = 0; j < NW1; j++){
-      fpga.source_w27_in[j] = w27[j];
-    }
-    for(int j = 0; j < NW2; j++){
-      fpga.source_w31_in[j] = w31[j];
-    }
-    for(int j = 0; j < NW3; j++){
-      fpga.source_w36_in[j] = w36[j];
-    }
-    for(int j = 0; j < NW4; j++){
-      fpga.source_w40_in[j] = w40[j];
-    }
-    for(int j = 0; j < NW5; j++){
-      fpga.source_w45_in[j] = w45[j];
-    }
-    for(int j = 0; j < NW6; j++){
-      fpga.source_w49_in[j] = w49[j];
-    }
+	size_t vector_size_in_bytes = sizeof(bigdata_t) *IN_STREAM_LEN*DATA_SIZE_IN;
+	size_t vector_size_out_bytes = sizeof(bigdata_t) * BIGSTREAMSIZE_OUT;
+	size_t vector_size_in_w27_bytes = sizeof(model_default_t) * NW1;
+	size_t vector_size_in_w31_bytes = sizeof(model_default_t) * NW2;
+	size_t vector_size_in_w36_bytes = sizeof(model_default_t) * NW3;
+	size_t vector_size_in_w40_bytes = sizeof(model_default_t) * NW4;
+	size_t vector_size_in_w45_bytes = sizeof(model_default_t) * NW5;
+	size_t vector_size_in_w49_bytes = sizeof(model_default_t) * NW6;
+	fpgaObj fpga;
+	fpga.nevents = nevents;
+	fpga.ikern = 0;
+	fpga.source_in.reserve(IN_STREAM_LEN*DATA_SIZE_IN);
+	fpga.source_hw_results.reserve(DATA_SIZE_OUT);
+	fpga.source_w27_in.reserve(NW1);
+	fpga.source_w31_in.reserve(NW2);
+	fpga.source_w36_in.reserve(NW3);
+	fpga.source_w40_in.reserve(NW4);
+	fpga.source_w45_in.reserve(NW5);
+	fpga.source_w49_in.reserve(NW6);
 
-    // OPENCL HOST CODE AREA START
-    // get_xil_devices() is a utility API which will find the xilinx
-    // platforms and will return list of devices connected to Xilinx platform
-    std::vector<cl::Device> devices = xcl::get_xil_devices();
-    cl::Device device = devices[0];
-    cl::Context context(device);
-    for (int i = 0; i < NUM_CU; i++) {
-        cl::CommandQueue q_tmp(context, device, CL_QUEUE_PROFILING_ENABLE | CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE);
-        fpga.q.push_back(q_tmp);
-    }
-    std::string device_name = device.getInfo<CL_DEVICE_NAME>(); 
-    std::cout << "Found Device=" << device_name.c_str() << std::endl;
+	//initialize
+	for(int j = 0 ; j < IN_STREAM_LEN*DATA_SIZE_IN ; j++){
+		fpga.source_in[j] = 0;
+	}
+	for(int j = 0 ; j < DATA_SIZE_OUT ; j++){
+		fpga.source_hw_results[j] = 0;
+	}
+	for(int j = 0; j < NW1; j++){
+		fpga.source_w27_in[j] = w27[j];
+	}
+	for(int j = 0; j < NW2; j++){
+		fpga.source_w31_in[j] = w31[j];
+	}
+	for(int j = 0; j < NW3; j++){
+		fpga.source_w36_in[j] = w36[j];
+	}
+	for(int j = 0; j < NW4; j++){
+		fpga.source_w40_in[j] = w40[j];
+	}
+	for(int j = 0; j < NW5; j++){
+		fpga.source_w45_in[j] = w45[j];
+	}
+	for(int j = 0; j < NW6; j++){
+		fpga.source_w49_in[j] = w49[j];
+	}
 
-    cl::Program::Binaries bins;
-    // Load xclbin
-    std::cout << "Loading: '" << xclbinFilename << "'\n";
-    std::ifstream bin_file(xclbinFilename, std::ifstream::binary);
-    bin_file.seekg (0, bin_file.end);
-    unsigned nb = bin_file.tellg();
-    bin_file.seekg (0, bin_file.beg);
-    char *buf = new char [nb];
-    bin_file.read(buf, nb);
+	// OPENCL HOST CODE AREA START
+	// get_xil_devices() is a utility API which will find the xilinx
+	// platforms and will return list of devices connected to Xilinx platform
+	std::vector<cl::Device> devices = xcl::get_xil_devices();
+	cl::Device device = devices[0];
+	cl::Context context(device);
+	for (int i = 0; i < NUM_CU; i++) {
+		cl::CommandQueue q_tmp(context, device, CL_QUEUE_PROFILING_ENABLE | CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE);
+		fpga.q.push_back(q_tmp);
+	}
+	std::string device_name = device.getInfo<CL_DEVICE_NAME>(); 
+	std::cout << "Found Device=" << device_name.c_str() << std::endl;
 
-    // Creating Program from Binary File
-    bins.push_back({buf,nb});
+	cl::Program::Binaries bins;
+	// Load xclbin
+	std::cout << "Loading: '" << xclbinFilename << "'\n";
+	std::ifstream bin_file(xclbinFilename, std::ifstream::binary);
+	bin_file.seekg (0, bin_file.end);
+	unsigned nb = bin_file.tellg();
+	bin_file.seekg (0, bin_file.beg);
+	char *buf = new char [nb];
+	bin_file.read(buf, nb);
 
-    devices.resize(1);
-    cl::Program tmp_program(context, devices, bins);
-    fpga.program = tmp_program;
+	// Creating Program from Binary File
+	bins.push_back({buf,nb});
 
-    for (int ib = 0; ib < NBUFFER; ib++) {
-        for (int i = 0; i < NUM_CU; i++) {
-            std::string cu_id = std::to_string(NUM_CU>1 ? i : 1);
-            std::string krnl_name_full =
-                "alveo_hls4ml:{alveo_hls4ml_" + cu_id + "}";
-            printf("Creating a kernel [%s] for CU(%d)\n",
-                   krnl_name_full.c_str(),
-                   i);
-            //Here Kernel object is created by specifying kernel name along with compute unit.
-            //For such case, this kernel object can only access the specific Compute unit
-            cl::Kernel krnl_tmp = cl::Kernel(
-                   fpga.program, krnl_name_full.c_str(), &fpga.err);
-            fpga.krnl_xil.push_back(krnl_tmp);
-        }
-    }
-    // Allocate Buffer in Global Memory
-    // Buffers are allocated using CL_MEM_USE_HOST_PTR for efficient memory and 
-    // Device-to-host communication
+	devices.resize(1);
+	cl::Program tmp_program(context, devices, bins);
+	fpga.program = tmp_program;
 
-    cl::Buffer buffer_in_w27_tmp    (context,CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,   vector_size_in_w27_bytes, fpga.source_w27_in.data());
-    cl::Buffer buffer_in_w31_tmp    (context,CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,   vector_size_in_w31_bytes, fpga.source_w31_in.data());
-    cl::Buffer buffer_in_w36_tmp    (context,CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,   vector_size_in_w36_bytes, fpga.source_w36_in.data());
-    cl::Buffer buffer_in_w40_tmp    (context,CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,   vector_size_in_w40_bytes, fpga.source_w40_in.data());
-    cl::Buffer buffer_in_w45_tmp    (context,CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,   vector_size_in_w45_bytes, fpga.source_w45_in.data());
-    cl::Buffer buffer_in_w49_tmp    (context,CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,   vector_size_in_w49_bytes, fpga.source_w49_in.data());
-    fpga.buffer_wvec_in.push_back(buffer_in_w27_tmp);
-    fpga.buffer_wvec_in.push_back(buffer_in_w31_tmp);
-    fpga.buffer_wvec_in.push_back(buffer_in_w36_tmp);
-    fpga.buffer_wvec_in.push_back(buffer_in_w40_tmp);
-    fpga.buffer_wvec_in.push_back(buffer_in_w45_tmp);
-    fpga.buffer_wvec_in.push_back(buffer_in_w49_tmp);
+	for (int ib = 0; ib < NBUFFER; ib++) {
+		for (int i = 0; i < NUM_CU; i++) {
+			std::string cu_id = std::to_string(NUM_CU>1 ? i : 1);
+			std::string krnl_name_full =
+			"alveo_hls4ml:{alveo_hls4ml_" + cu_id + "}";
+			printf("Creating a kernel [%s] for CU(%d)\n",
+					krnl_name_full.c_str(),
+					i);
+			//Here Kernel object is created by specifying kernel name along with compute unit.
+			//For such case, this kernel object can only access the specific Compute unit
+			cl::Kernel krnl_tmp = cl::Kernel(
+				fpga.program, krnl_name_full.c_str(), &fpga.err);
+			fpga.krnl_xil.push_back(krnl_tmp);
+		}
+	}
+	// Allocate Buffer in Global Memory
+	// Buffers are allocated using CL_MEM_USE_HOST_PTR for efficient memory and 
+	// Device-to-host communication
+
+	cl::Buffer buffer_in_w27_tmp    (context,CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,   vector_size_in_w27_bytes, fpga.source_w27_in.data());
+	cl::Buffer buffer_in_w31_tmp    (context,CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,   vector_size_in_w31_bytes, fpga.source_w31_in.data());
+	cl::Buffer buffer_in_w36_tmp    (context,CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,   vector_size_in_w36_bytes, fpga.source_w36_in.data());
+	cl::Buffer buffer_in_w40_tmp    (context,CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,   vector_size_in_w40_bytes, fpga.source_w40_in.data());
+	cl::Buffer buffer_in_w45_tmp    (context,CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,   vector_size_in_w45_bytes, fpga.source_w45_in.data());
+	cl::Buffer buffer_in_w49_tmp    (context,CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,   vector_size_in_w49_bytes, fpga.source_w49_in.data());
+	fpga.buffer_wvec_in.push_back(buffer_in_w27_tmp);
+	fpga.buffer_wvec_in.push_back(buffer_in_w31_tmp);
+	fpga.buffer_wvec_in.push_back(buffer_in_w36_tmp);
+	fpga.buffer_wvec_in.push_back(buffer_in_w40_tmp);
+	fpga.buffer_wvec_in.push_back(buffer_in_w45_tmp);
+	fpga.buffer_wvec_in.push_back(buffer_in_w49_tmp);
     
-    fpga.writeList.reserve(NUM_CU*NBUFFER);
-    fpga.kernList.reserve(NUM_CU*NBUFFER);
-    fpga.readList.reserve(NUM_CU*NBUFFER);
-    for (int ib = 0; ib < NBUFFER; ib++) {
-        for (int ik = 0; ik < NUM_CU; ik++) {
-	  cl::Buffer buffer_in_tmp    (context,CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,   vector_size_in_bytes, fpga.source_in.data());
-	  cl::Buffer buffer_out_tmp(context,CL_MEM_USE_HOST_PTR | CL_MEM_WRITE_ONLY, vector_size_out_bytes, fpga.source_hw_results.data());
-	  fpga.buffer_in.push_back(buffer_in_tmp);
-	  fpga.buffer_out.push_back(buffer_out_tmp);
-	  
-	  cl::Event tmp_write = cl::Event();
-	  cl::Event tmp_kern = cl::Event();
-	  cl::Event tmp_read = cl::Event();
-	  fpga.write_event.push_back(tmp_write);
-	  fpga.kern_event.push_back(tmp_kern);
-	  //fpga.read_event.push_back(tmp_read);
+	fpga.writeList.reserve(NUM_CU*NBUFFER);
+	fpga.kernList.reserve(NUM_CU*NBUFFER);
+	fpga.readList.reserve(NUM_CU*NBUFFER);
+	for (int ib = 0; ib < NBUFFER; ib++) {
+		for (int ik = 0; ik < NUM_CU; ik++) {
+			cl::Buffer buffer_in_tmp    (context,CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,   vector_size_in_bytes, fpga.source_in.data());
+			cl::Buffer buffer_out_tmp(context,CL_MEM_USE_HOST_PTR | CL_MEM_WRITE_ONLY, vector_size_out_bytes, fpga.source_hw_results.data());
+			fpga.buffer_in.push_back(buffer_in_tmp);
+			fpga.buffer_out.push_back(buffer_out_tmp);
+	
+			cl::Event tmp_write = cl::Event();
+			cl::Event tmp_kern = cl::Event();
+			cl::Event tmp_read = cl::Event();
+			fpga.write_event.push_back(tmp_write);
+			fpga.kern_event.push_back(tmp_kern);
+			//fpga.read_event.push_back(tmp_read);
 
-	  int narg = 0;
-	  fpga.krnl_xil[ib*NUM_CU+ik].setArg(narg++, fpga.buffer_in[ib*NUM_CU+ik]);
-	  fpga.krnl_xil[ib*NUM_CU+ik].setArg(narg++, fpga.buffer_wvec_in[0]);
-	  fpga.krnl_xil[ib*NUM_CU+ik].setArg(narg++, fpga.buffer_wvec_in[1]);
-	  fpga.krnl_xil[ib*NUM_CU+ik].setArg(narg++, fpga.buffer_wvec_in[2]);
-	  fpga.krnl_xil[ib*NUM_CU+ik].setArg(narg++, fpga.buffer_wvec_in[3]);
-	  fpga.krnl_xil[ib*NUM_CU+ik].setArg(narg++, fpga.buffer_wvec_in[4]);
-	  fpga.krnl_xil[ib*NUM_CU+ik].setArg(narg++, fpga.buffer_wvec_in[5]);
+			int narg = 0;
+			fpga.krnl_xil[ib*NUM_CU+ik].setArg(narg++, fpga.buffer_in[ib*NUM_CU+ik]);
+			fpga.krnl_xil[ib*NUM_CU+ik].setArg(narg++, fpga.buffer_wvec_in[0]);
+			fpga.krnl_xil[ib*NUM_CU+ik].setArg(narg++, fpga.buffer_wvec_in[1]);
+			fpga.krnl_xil[ib*NUM_CU+ik].setArg(narg++, fpga.buffer_wvec_in[2]);
+			fpga.krnl_xil[ib*NUM_CU+ik].setArg(narg++, fpga.buffer_wvec_in[3]);
+			fpga.krnl_xil[ib*NUM_CU+ik].setArg(narg++, fpga.buffer_wvec_in[4]);
+			fpga.krnl_xil[ib*NUM_CU+ik].setArg(narg++, fpga.buffer_wvec_in[5]);
 
-	  fpga.krnl_xil[ib*NUM_CU+ik].setArg(narg++, fpga.buffer_out[ib*NUM_CU+ik]);
-	  fpga.isFirstRun.push_back(true);
-	  std::vector<cl::Event> tmp_write_vec(1);
-	  std::vector<cl::Event> tmp_kern_vec(1);
-	  std::vector<cl::Event> tmp_read_vec(1);
-	  fpga.writeList.push_back(tmp_write_vec);
-	  fpga.kernList.push_back(tmp_kern_vec);
-	  fpga.readList.push_back(tmp_read_vec);
-        }
-    }
-    auto t0 = Clock::now();
-    auto t1 = Clock::now();
-    auto t1a = Clock::now();
-    auto t1b = Clock::now();
-    auto t2 = Clock::now();
-    auto t3 = Clock::now();
-    
-    int index = 0;
-    for (int ib = 0; ib < NBUFFER; ib++) {
+			fpga.krnl_xil[ib*NUM_CU+ik].setArg(narg++, fpga.buffer_out[ib*NUM_CU+ik]);
+			fpga.isFirstRun.push_back(true);
+			std::vector<cl::Event> tmp_write_vec(1);
+			std::vector<cl::Event> tmp_kern_vec(1);
+			std::vector<cl::Event> tmp_read_vec(1);
+			fpga.writeList.push_back(tmp_write_vec);
+			fpga.kernList.push_back(tmp_kern_vec);
+			fpga.readList.push_back(tmp_read_vec);
+		}
+	}
+//=======================
+//load input&output file
+//=======================
+	//load input data from text file
+	std::ifstream fin(datadir+"./tb_input_features.dat");
+	//load predictions from text file
+	std::ifstream fpr(datadir+"./tb_output_predictions.dat");
+	
+	std::string iline;
+	std::string pline;
+	int e = 0;
+	if (!(fin.is_open()) || !(fpr.is_open())) {
+		std::cout << "Unable to open input/predictions file, using random input" << std::endl;
+		//flag for success/failure of finding data files
+	}
+	std::ofstream fout;
+	fout.open("./tb_output_data.dat");
+//=====================
+//input
+//=====================
+	int input_set = 0;
+	if (fin.is_open() && fpr.is_open()){
+	// If files are valid and their end has not been reached yet, get inputs/predictions from files
+	while(std::getline(fin,iline) && std::getline(fpr,pline)) {
+		
+	if (e%1000==0) std::cout << "Processing event " << e << std::endl;
+	e++;
+	
+		//Here is input.
+	char* cstr=const_cast<char*>(iline.c_str());
+	char* current;
+	std::vector<float> in;
+	current=strtok(cstr," ");
+	while(current!=NULL){
+		in.push_back(atof(current));
+		current=strtok(NULL," ");
+	}
+	
+	//Here is the corresponding output(correct one)
+	cstr=const_cast<char*>(pline.c_str());
+	std::vector<float> pr;
+	current=strtok(cstr," ");
+	while(current!=NULL){
+		pr.push_back(atof(current));
+		current=strtok(NULL," ");
+	}
+	//Send into FPGA's DRAM
+	for(int i0 = 0; i0 < IN_STREAM_LEN*DATA_SIZE_IN; i0++) { 
+		fpga.source_in[i0] = (bigdata_t)in[i0];
+		//std::cout<<(double)fpga.source_in[i0]<<std::endl;
+	}
+	//Reset the output result
+	for(int j = 0 ; j < DATA_SIZE_OUT ; j++){
+		fpga.source_hw_results[j] = 0;
+	}
+//=====================
+//run the FPGA
+//=====================
 
-        for (int i = 0 ; i < NUM_CU ; i++){
+	auto ts0 = Clock::now();
+	fpga.ithr = 0;
+	std::cout <<"run FPGA"<<std::endl;
+	FPGA(std::ref(fpga));
+	auto ts4 = Clock::now();
+	for (int i = 0 ; i < NUM_CU ; i++){
+		OCL_CHECK(fpga.err, fpga.err = fpga.q[i].flush());
+		OCL_CHECK(fpga.err, fpga.err = fpga.q[i].finish());
+	}
+	//OPENCL HOST CODE AREA END
+	auto ts5 = Clock::now();
+	//print the time
+	print_nanoseconds("      begin:  ",ts0, input_set, fout);
+	print_nanoseconds("       done:  ",ts4, input_set, fout);
+	print_nanoseconds("       end:   ",ts5, input_set, fout);
+	//std::cout << fpga.ss.str();
 
-            for (int istream = 0; istream < STREAMSIZE; istream++) {
-                for (int ij = 0; ij < BIGSTREAMSIZE_IN; ij++) {
-		  // Create the test data if no data files found or if end of files has been reached
-		  fpga.source_in[ib*NUM_CU*STREAMSIZE*BIGSTREAMSIZE_IN+i*STREAMSIZE*BIGSTREAMSIZE_IN+istream*BIGSTREAMSIZE_IN+ij] = (bigdata_t)(12354.37674*(ij+istream*BIGSTREAMSIZE_IN+STREAMSIZE*BIGSTREAMSIZE_IN*(ib+i+1)));
-		  //fpga.source_in[ib*NUM_CU*STREAMSIZE*BIGSTREAMSIZE_IN+i*STREAMSIZE*BIGSTREAMSIZE_IN+istream*BIGSTREAMSIZE_IN+ij] = 12345678-12345684*istream;//(bigdata_t)(ij*32);
-		  //fpga.source_in[index] = (bigdata_t) index;
-		  
-		  bigdata_t tmp = 0;
-		  for(int i0 = 0; i0 < COMPRESSION; i0++) {
-		    data_t inTmpL = (data_t) 100;//index;
-		    tmp.range((i0+1)*16-1,(i0)*16) = inTmpL.range(15,0);
-		  } 
-		  fpga.source_in[index] = tmp;
-		  index++;
-                }
-            }
-        }
-    }
 
-    auto ts0 = SClock::now();
-    print_nanoseconds("      begin:  ",ts0, 0);
+//=====================
+//output result
+//=====================
+	std::cout<<"Predictions: \n";
+	fout <<"Predictions:  ";
+	std::cout << pr[0] << " \t";
+	fout << pr[0] << "\n";
+	std::cout << std::endl;
 
-    fpga.ithr = 0;
-
-    FPGA(std::ref(fpga));
-    auto ts4 = SClock::now();
-    print_nanoseconds("       done:  ",ts4, 0);
-    for (int i = 0 ; i < NUM_CU ; i++){
-        OCL_CHECK(fpga.err, fpga.err = fpga.q[i].flush());
-        OCL_CHECK(fpga.err, fpga.err = fpga.q[i].finish());
-    }
-// OPENCL HOST CODE AREA END
-    auto ts5 = SClock::now();
-    print_nanoseconds("       end:   ",ts5, 0);
-    std::cout << fpga.ss.str();
-    for (int ib = 0; ib < NBUFFER; ib++) {
-        for (int i = 0 ; i < NUM_CU ; i++){
-            for (int istream = 0; istream < STREAMSIZE; istream++) {
-                std::cout<<"STREAM - "<<istream<<"\n\t";
-                for (int ij = 0; ij < BIGSTREAMSIZE_OUT; ij++) {
-                // Create the test data if no data files found or if end of files has been reached
-
-		  bigdata_t outTmp = fpga.source_hw_results[ib*NUM_CU*STREAMSIZE*BIGSTREAMSIZE_OUT+i*STREAMSIZE*BIGSTREAMSIZE_OUT+istream*BIGSTREAMSIZE_OUT+ij];
-		  std::cout << "----> ";
-		  for(int ik = 0; ik < COMPRESSION; ik++) { 
-		    data_t outTmpL;
-		    outTmpL.range(15,0) = outTmp.range((ik+1)*16-1,(ik)*16);
-		    std::cout << outTmpL << "  ";
-		  }
-		  std::cout << std::endl;
-		  std::cout << " out num " <<outTmp << std::endl;
-                }
-                std::cout<<std::endl;
-            }
-        }
-    }
-
-    return EXIT_SUCCESS;
+	std::cout<<"Quantized predictions: \n";
+	fout <<"Quantized predictions:  ";
+	std::cout << fpga.source_hw_results[0] << " \t";
+	fout << fpga.source_hw_results[0] << "\n\n"; 
+	std::cout << std::endl;
+	std::cout<<"---- END EVENT "<<" ----"<<std::endl;
+	input_set++;
+	}
+}
+	fin.close();
+	fpr.close();
+	fout.close();
+	return EXIT_SUCCESS;
 }
 
