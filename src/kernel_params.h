@@ -3,7 +3,7 @@
 
 //how many consecutive sets of inputs to run over per kernel execution
 #define COMPRESSION 32
-#define STREAMSIZE 5
+#define STREAMSIZE 1
 #define BIGSTREAMSIZE_IN  77
 #define BIGSTREAMSIZE_OUT 1
 
@@ -13,8 +13,8 @@
 #define DATA_SIZE_IN  N_INPUT_3_1
 #define DATA_SIZE_OUT  N_LAYER_53
 
-typedef ap_fixed<16,6> data_t;
-typedef ap_uint<512>    bigdata_t;
+typedef ap_fixed<32,16> data_t;
+typedef ap_fixed<32,16> bigdata_t;
 
 #define NW1 73728
 #define NW2 147456
